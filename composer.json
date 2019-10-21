@@ -1,0 +1,24 @@
+{
+    "name": "vdvpie22/audit-log-client",
+    "type": "library",
+    "description": "Audit log PHP HTTP client library based on Guzzle",
+    "keywords": ["framework", "http", "rest", "web service", "curl", "client", "HTTP client"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denis Vagner",
+            "email": "vdvpie22@gmail.com",
+            "homepage": "https://github.com/vdvpie22"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.3",
+        "justinrainbow/json-schema": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "AuditLog\\": "src/"
+        }
+    },
+}

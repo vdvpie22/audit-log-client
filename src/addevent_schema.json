@@ -1,0 +1,19 @@
+{
+  "request": "string",
+  "session": "string",
+  "actor": "number",
+  "actorType": "string",
+  "actorAlias": "string",
+  "eventType": "string",
+  "entity": "string",
+  "entityId": "string",
+  "entityProperties": [
+    {
+      "entity": "string",
+      "entityId": "string",
+      "name": "string",
+      "oldValue": "string",
+      "newValue": "string"
+    }
+  ]
+}
