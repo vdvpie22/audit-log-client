@@ -39,10 +39,7 @@ class AuditLogClient
     public function getEvents(array $data = [])
     {
         $route = $this->routes->getEvents();
-
-        $response = $this->httpClient->post($route->path(), [
-            RequestOptions::JSON => (object)[],
-        ]);
+        $response = $this->httpClient->get($route->path(), ['query' => $data]);
         return $this->processResponse($response);
     }
 
@@ -62,9 +59,9 @@ class AuditLogClient
     {
         if ($response->getStatusCode() === 200) {
             $events = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-            $result['events'] = $this->prepareHits($events['hits']['hits']);
-
-            $result['total'] = $events['hits']['total']['value'];
+            $result['events'] = $events['items'];
+            $result['total'] = $events['total'];
+            $result['items_count'] = $events['items_count'];
             return $result;
         } else {
             throw new \RuntimeException('Server response with HTTP code: '.$response->getStatusCode());
