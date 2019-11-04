@@ -36,17 +36,17 @@ class AuditLogClient
         echo 'addEvent';
     }
 
-    public function getEvents(array $data = [])
+    public function getEvents(String $domain, array $data = [])
     {
         $route = $this->routes->getEvents();
-        $response = $this->httpClient->get($route->path(), ['query' => $data]);
+        $response = $this->httpClient->get($route->path().'/'.$domain, ['query' => $data]);
         return $this->processResponse($response);
     }
 
-    public function getEventById($id)
+    public function getEventById(String $domain, String $id)
     {
         $route = $this->routes->getEventById();
-        $response = $this->httpClient->get($route->path().'/'.$id);
+        $response = $this->httpClient->get($route->path().'/'.$domain.'/'.$id);
         return $this->processResponse($response);
     }
 
