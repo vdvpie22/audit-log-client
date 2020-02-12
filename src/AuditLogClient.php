@@ -22,6 +22,11 @@ class AuditLogClient
      */
     private $httpClient;
 
+    /**
+     * AuditLogClient constructor.
+     *
+     * @param AuditLogConfig $auditLogConfig
+     */
     public function __construct(AuditLogConfig $auditLogConfig)
     {
         $this->config = $auditLogConfig;
@@ -31,13 +36,31 @@ class AuditLogClient
         ]);
     }
 
+    /**
+     * @param String $domain
+     * @param array  $data
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function addEvent(String $domain, array $data)
     {
         $route = $this->routes->createEvent();
-        $response = $this->httpClient->post($route->path().'/'.$domain, ['query' => $data]);
-        return $response;
+        $this->httpClient->postAsync($route->path().'/'.$domain, ['json' => $data])
+            ->then(
+                function ($res) {
+                },
+                function ($e) {
+                }
+            )->wait();
+        return true;
     }
 
+    /**
+     * @param String $domain
+     * @param array  $data
+     *
+     * @return mixed
+     */
     public function getEvents(String $domain, array $data = [])
     {
         $route = $this->routes->getEvents();
@@ -58,6 +81,12 @@ class AuditLogClient
         return $response;
     }
 
+    /**
+     * @param String $domain
+     * @param String $id
+     *
+     * @return mixed
+     */
     public function getEventById(String $domain, String $id)
     {
         $route = $this->routes->getEventById();
@@ -65,11 +94,21 @@ class AuditLogClient
         return $this->processResponse($response);
     }
 
+    /**
+     * @param Route $route
+     *
+     * @return string
+     */
     private function getFullUrl(Route $route)
     {
         return $this->config->serverUrl().$route->path();
     }
 
+    /**
+     * @param $response
+     *
+     * @return mixed
+     */
     private function processResponse($response)
     {
         if ($response->getStatusCode() === 200) {
@@ -83,6 +122,11 @@ class AuditLogClient
         }
     }
 
+    /**
+     * @param array $hits
+     *
+     * @return array
+     */
     private function prepareHits(array $hits)
     {
         foreach ($hits as &$hit) {
