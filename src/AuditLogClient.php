@@ -31,9 +31,11 @@ class AuditLogClient
         ]);
     }
 
-    public function addEvent(array $data)
+    public function addEvent(String $domain, array $data)
     {
-        echo 'addEvent';
+        $route = $this->routes->createEvent();
+        $response = $this->httpClient->post($route->path().'/'.$domain, ['query' => $data]);
+        return $response;
     }
 
     public function getEvents(String $domain, array $data = [])
